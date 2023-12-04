@@ -4,6 +4,7 @@ import TodoList from "./components/TodoList"
 import TodoFilter from "./components/TodoFilter"
 import TodoComputed from "./components/TodoComputed"
 import { useEffect, useState } from "react"
+import { DragDropContext} from "@hello-pangea/dnd"
 
 
 /*const initalStateTodos=[
@@ -75,6 +76,18 @@ const App =()=>{
 
   const changeFilter=(filter)=>setFilter(filter)
 
+  const handleDragEnd=(result)=>{
+    if(!result.destination)return
+    const starIndex = result.source.index
+    const endIndex = result.destination.index
+
+    const  copyArray=[...todos]
+    const [reorderItem]= copyArray.splice(starIndex, 1)
+
+    copyArray.splice(endIndex,0,reorderItem)
+    setTodos(copyArray)
+  }
+
   return(
     
   <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] md:bg-[url('./assets/images/bg-desktop-light.jpg')] transition-all duration-1000 bg-no-repeat bg-contain bg-gray-300 min-h-scree
@@ -85,7 +98,9 @@ const App =()=>{
       {/*Todo create*/}
     <TodoCreate createTodo={createTodo} />
     {/*Todo itemList todo update todo delete*/}
-    <TodoList todos={filterTodos()} removeTodo={removeTodo} updateTodo={updateTodo} />  
+    <DragDropContext onDragEnd={handleDragEnd}>
+    <TodoList todos={filterTodos()} removeTodo={removeTodo} updateTodo={updateTodo} /> 
+    </DragDropContext>
     {/*Todo Computed*/}
     <TodoComputed computedItemsLeft={computedItemsLeft} clearCompleted={clearCompleted}/>
     {/*Todo Filter*/}
