@@ -11,7 +11,9 @@ const TodoList=({todos, removeTodo,updateTodo})=>{
                 <Draggable index={index} draggableId={`${todo.id}`} key={todo.id}>
                     {
                 (draggableProvider)=>(
-                    <TodoITem draggableProvider={draggableProvider} todo={todo} removeTodo={removeTodo} updateTodo={updateTodo}/>
+                    <TodoITem draggableProvider={draggableProvider} todo={todo} removeTodo={removeTodo} updateTodo={updateTodo} 
+                    ref={draggableProvider.innerRef}{...draggableProvider.draggableProps}
+                    {...draggableProvider.dragHandleProps}/>
                 )
                 }
             </Draggable>
